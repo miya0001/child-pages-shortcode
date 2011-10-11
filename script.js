@@ -1,0 +1,1 @@
+(function(){var a=jQuery;a.fn.equalHeights=function(){var b=0;a(this).each(function(){if(a(this).height()>b){b=a(this).height()}});a(this).each(function(){a(this).height(b)});return this};a(".child_pages .child_page-container").equalHeights()})(jQuery);
