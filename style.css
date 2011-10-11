@@ -25,6 +25,9 @@
 {
     text-align: center;
     overflow: hidden;
+    background-image: url(img/camera.png);
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .child_pages .post_thumb .wp-post-image
