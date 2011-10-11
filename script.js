@@ -1,17 +1,1 @@
-(function(){
-    var $ = jQuery;
-    $.fn.equalHeights = function() {
-        var currentTallest = 0;
-        $(this).each(function(){
-            if ($(this).height() > currentTallest) {
-                currentTallest = $(this).height();
-            }
-        });
-        $(this).height(currentTallest);
-        return this;
-    };
-    $.event.add(window, "load", function(){
-        $(".child_pages .post_thumb").equalHeights();
-        $(".child_pages .child_page-container").equalHeights();
-    });
-})(jQuery);
+(function(){var a=jQuery;a.fn.equalHeights=function(){var b=0;a(this).each(function(){if(a(this).height()>b){b=a(this).height()}});a(this).height(b);return this};a.event.add(window,"load",function(){a(".child_pages .post_thumb").equalHeights();a(".child_pages .child_page-container").equalHeights()})})(jQuery);

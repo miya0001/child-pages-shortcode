@@ -11,6 +11,7 @@
         return this;
     };
     $.event.add(window, "load", function(){
+        $(".child_pages .post_thumb").equalHeights();
         $(".child_pages .child_page-container").equalHeights();
     });
 })(jQuery);
