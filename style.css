@@ -39,13 +39,14 @@
 .child_pages .post_content h4
 {
     font-weight: bolder;
-    margin: 0px !important;
+    margin-top: 0.5em 0 0 0;
     font-size: 14px;
     line-height: 1.2em;
 }
 
 .child_pages .post_content .post_excerpt
 {
+    margin-top: 0.5em;
     font-size: 12px;
     line-height: 1.2em;
 }

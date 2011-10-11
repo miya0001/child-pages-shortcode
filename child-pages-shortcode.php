@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://firegoby.theta.ne.jp/wp/child-pages-shortcode
 Description: Display child pages.
-Version: 0.1.0
+Version: 0.2.0
 Author URI: http://firegoby.theta.ne.jp/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
