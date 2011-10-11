@@ -4,7 +4,7 @@ Donate link: http://firegoby.theta.ne.jp/
 Tags: shortcode 
 Requires at least: 3.2
 Tested up to: 3.2
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 
 Shortcode display child pages.
 
@@ -67,6 +67,9 @@ Filter for stylesheet URI.
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 0.3.0 =
+* Adapt to no-image.
 
 = 0.1.0 =
 * The first release.
