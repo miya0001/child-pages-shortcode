@@ -66,7 +66,7 @@ Default Template
 
 Template valiables
 
-* %post_id% - ID pf the Page
+* %post_id% - ID of the Page
 * %width% - Width of block for single page
 * %post_url% - Page permalink
 * %post_thumb% - <img> for Post thubmail
