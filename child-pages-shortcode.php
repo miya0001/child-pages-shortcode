@@ -3,7 +3,7 @@
 Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
-Description: Add Shortcode it will able to display child pages.
+Description: You can use shortcode for display child pages from the page.
 Version: 0.4.0
 Author URI: http://wpist.me/
 Domain Path: /languages

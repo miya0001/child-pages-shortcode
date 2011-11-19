@@ -6,24 +6,24 @@ Requires at least: 3.2
 Tested up to: 3.2
 Stable tag: 0.4.0
 
-Add Shortcode it will able to display child pages.
+You can use shortcode for display child pages from the page.
 
 == Description ==
 
-Add Shortcode it will able to display child pages.
+You can use shortcode for display child pages from the page.
 
 [This plugin maintained on GitHub.](https://github.com/miya0001/child-pages-shortcode)
 
 = Some features =
 
-* Shortcode display child pages.
+* This plugin will add shortcode `[child_pages]` display child pages.
 * You can customize default HTML template on your plugin.
 * This plugin will be able to "excerpt" to the pages.
 
 = Example =
 
 Display child pages of the current page.
-`[child_pages]`
+`[child_pages width="33%"]`
 
 
 = Args =
