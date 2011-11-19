@@ -21,6 +21,7 @@ function __construct()
     add_shortcode('child_pages', array(&$this, 'shortcode'));
     add_action("wp_head", array(&$this, "wp_head"));
     add_action("init", array(&$this, "init"));
+    add_filter('plugin_row_meta', array(&$this, 'plugin_row_meta'), 10, 2);
 }
 
 public function init()
@@ -126,6 +127,18 @@ public function wp_head()
     );
 }
 
+public function plugin_row_meta($links, $file)
+{
+    $pname = plugin_basename(__FILE__);
+    if ($pname === $file) {
+        $links[] = sprintf(
+            '<a href="%s">Donate</a>',
+            'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU'
+        );
+    }
+    return $links;
 }
+
+} // end childPagesShortcode()
 
 // eof
