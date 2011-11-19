@@ -1,0 +1,33 @@
+# Copyright (C) 2010 Child Pages Shortcode
+# This file is distributed under the same license as the Child Pages Shortcode package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Child Pages Shortcode 0.4.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/child-pages-shortcode\n"
+"POT-Creation-Date: 2011-11-19 09:28:12+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. Plugin Name of the plugin/theme
+msgid "Child Pages Shortcode"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://wpist.me/wp/child-pages-shortcode/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "You can use shortcode for display child pages from the page."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Takayuki Miyauchi"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://wpist.me/"
+msgstr ""
