@@ -1,7 +1,7 @@
 === Child Pages Shortcode ===
 Contributors: miyauchi
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
-Tags: shortcode 
+Tags: shortcode
 Requires at least: 3.2
 Tested up to: 3.2
 Stable tag: 0.4.0
