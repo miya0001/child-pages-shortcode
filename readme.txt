@@ -1,16 +1,16 @@
 === Child Pages Shortcode ===
 Contributors: miyauchi
-Donate link: http://firegoby.theta.ne.jp/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
 Tags: shortcode 
 Requires at least: 3.2
 Tested up to: 3.2
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 
-Shortcode display child pages.
+Add Shortcode it will able to display child pages.
 
 == Description ==
 
-Shortcode display child pages.
+Add Shortcode it will able to display child pages.
 
 [This plugin maintained on GitHub.](https://github.com/miya0001/child-pages-shortcode)
 
@@ -18,11 +18,13 @@ Shortcode display child pages.
 
 * Shortcode display child pages.
 * You can customize default HTML template on your plugin.
+* This plugin will be able to "excerpt" to the pages.
 
 = Example =
 
 Display child pages of the current page.
 `[child_pages]`
+
 
 = Args =
 
@@ -50,15 +52,35 @@ Filter for stylesheet URI.
     }
 ?>`
 
+Default Template
+
+`<div id="child_page-%post_id%" class="child_page" style="width:%width%;">
+    <div class="child_page-container">
+        <div class="post_thumb"><a href="%post_url%">%post_thumb%</a></div>
+        <div class="post_content">
+            <h4><a href="%post_url%">%post_title%</a></h4>
+            <div class="post_excerpt">%post_excerpt%</div>
+        </div>
+    </div>
+</div>`
+
+Template valiables
+
+* %post_id% - ID pf the Page
+* %width% - Width of block for single page
+* %post_url% - Page permalink
+* %post_thumb% - <img> for Post thubmail
+* %post_title% - Page title
+* %post_excerpt% - Page excerpt
+
 = Support =
 
-* @miya0001 on twitter.
-* http://www.facebook.com/firegoby
-* https://github.com/miya0001/child-pages-shortcode
+* http://wpist.me/wp/child-pages-shortcode/ (en)
+* http://firegoby.theta.ne.jp/wp/child-pages-shortcode (ja)
 
 = Contributors =
 
-* [Takayuki Miyauchi](http://firegoby.theta.ne.jp/)
+* [Takayuki Miyauchi](http://wpist.me/)
 
 == Installation ==
 
@@ -67,6 +89,9 @@ Filter for stylesheet URI.
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 0.4.0 =
+* add `add_post_type_support("page", "excerpt");`
 
 = 0.3.0 =
 * Adapt to no-image.
@@ -81,4 +106,6 @@ The author must acknowledge the thing that the operation guarantee and the suppo
 
 == Contact ==
 
-twitter @miya0001
+* http://wpist.me/
+* [@wpist_me](https://twitter.com/#!/wpist_me)
+

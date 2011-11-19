@@ -2,10 +2,10 @@
 /*
 Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
-Plugin URI: http://firegoby.theta.ne.jp/wp/child-pages-shortcode
-Description: Display child pages.
-Version: 0.3.0
-Author URI: http://firegoby.theta.ne.jp/
+Plugin URI: http://wpist.me/wp/child-pages-shortcode/
+Description: Add Shortcode it will able to display child pages.
+Version: 0.4.0
+Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
 */
@@ -13,6 +13,8 @@ Text Domain: child-pages-shortcode
 new childPagesShortcode();
 
 class childPagesShortcode {
+
+private $ver = '0.4.0';
 
 function __construct()
 {
@@ -23,6 +25,7 @@ function __construct()
 
 public function init()
 {
+    add_post_type_support('page', 'excerpt');
     $js = apply_filters(
         "child-pages-shortcode-js",
         WP_PLUGIN_URL.'/'.dirname(plugin_basename(__FILE__)).'/script.js'
@@ -31,7 +34,7 @@ public function init()
         'child-pages-shortcode',
         $js,
         array('jquery'),
-        null,
+        $this->ver,
         true
     );
     wp_enqueue_script('child-pages-shortcode');
@@ -39,6 +42,9 @@ public function init()
 
 public function shortcode($p)
 {
+	if( !isset($p['id']) || !intval($p['id']) ){
+		$p['id'] = get_the_ID();
+	}
     if (!isset($p['size']) || !$p['size']) {
         $p['size'] = 'thumbnail';
     }
@@ -50,33 +56,48 @@ public function shortcode($p)
 
 private function display($p)
 {
-    $posts = $this->get_posts($p);
-    $size = $p['size'];
     $html = sprintf(
-        '<div class=" child_pages child_pages-%s">',
-        esc_attr($size)
+        '<div class="child_pages child_pages-%s">',
+        esc_attr($p['size'])
     );
     $template = $this->get_template();
-    foreach ($posts as $post) {
+
+    $args = array(
+        'post_status' => 'publish',
+        'post_type' => 'page',
+        'post_parent' => $p['id'],
+        'orderby' => 'menu_order',
+        'order' => 'ASC',
+        'numberposts' => '-1',
+    );
+
+    query_posts($args);
+    if (have_posts()):
+    while (have_posts()) {
+        the_post();
         $img = null;
-        if ($tid = get_post_thumbnail_id($post->ID)) {
-            $src = wp_get_attachment_image_src($tid, $size);
+        if ($tid = get_post_thumbnail_id()) {
+            $src = wp_get_attachment_image_src($tid, $p['size']);
             $img = sprintf(
-                '<img src="%s" alt="" title="%s" />',
+                '<img src="%s" alt="%s" title="%s" />',
                 esc_attr($src[0]),
-                esc_attr($post->post_title)
+                esc_attr(get_the_title()),
+                esc_attr(get_the_title())
             );
         }
-        $url = get_permalink($post->ID);
+        $url = get_permalink(get_the_ID());
         $tpl = $template;
         $tpl = str_replace('%width%', esc_attr($p['width']), $tpl);
-        $tpl = str_replace('%post_id%', intval($post->ID), $tpl);
-        $tpl = str_replace('%post_title%', esc_html($post->post_title), $tpl);
+        $tpl = str_replace('%post_id%', intval(get_the_ID()), $tpl);
+        $tpl = str_replace('%post_title%', esc_html(get_the_title()), $tpl);
         $tpl = str_replace('%post_url%', esc_url($url), $tpl);
         $tpl = str_replace('%post_thumb%', $img, $tpl);
-        $tpl = str_replace('%post_excerpt%', esc_html($post->post_excerpt), $tpl);
+        $tpl = str_replace('%post_excerpt%', get_the_excerpt(), $tpl);
         $html .= $tpl;
     }
+    endif; // end have_posts()
+    wp_reset_query();
+
     $html .= '</div>';
 
     return $html;
@@ -98,30 +119,13 @@ private function get_template()
 
 public function wp_head()
 {
-    $url = WP_PLUGIN_URL.'/'.dirname(plugin_basename(__FILE__)).'/style.css';
+    $url = WP_PLUGIN_URL.'/'.dirname(plugin_basename(__FILE__)).'/style.css?ver='.$this->ver;
     printf(
         '<link rel="stylesheet" type="text/css" media="all" href="%s" />'."\n",
         apply_filters("child-pages-shortcode-stylesheet", $url)
     );
 }
 
-private function get_posts($p)
-{
-	global $post;
-	if( !isset($p['id']) || !intval($p['id']) ){
-		$p['id'] = $post->ID;
-	}
-    $args = array(
-        'post_status' => 'publish',
-        'post_type' => 'page',
-        'post_parent' => $p['id'],
-        'orderby' => 'menu_order',
-        'order' => 'ASC',
-        'numberposts' => '-1',
-    ); 
-
-    return get_posts($args);
 }
 
-}
-?>
+// eof
