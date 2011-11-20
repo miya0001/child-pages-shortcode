@@ -69,7 +69,7 @@ private function display($p)
         'post_parent' => $p['id'],
         'orderby' => 'menu_order',
         'order' => 'ASC',
-        'numberposts' => '-1',
+        'nopaging' => true,
     );
 
     query_posts($args);
