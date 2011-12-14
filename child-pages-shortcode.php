@@ -96,8 +96,8 @@ private function display($p)
         $tpl = str_replace('%post_excerpt%', get_the_excerpt(), $tpl);
         $html .= $tpl;
     }
-    endif; // end have_posts()
     wp_reset_query();
+    endif; // end have_posts()
 
     $html .= '</div>';
 
