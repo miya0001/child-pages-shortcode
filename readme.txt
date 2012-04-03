@@ -3,8 +3,8 @@ Contributors: miyauchi
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
 Tags: shortcode
 Requires at least: 3.2
-Tested up to: 3.3
-Stable tag: 0.7.0
+Tested up to: 3.3.1
+Stable tag: 0.7.1
 
 You can use shortcode for display child pages from the page.
 
