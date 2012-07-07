@@ -3,8 +3,8 @@ Contributors: miyauchi
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
 Tags: shortcode
 Requires at least: 3.2
-Tested up to: 3.3.1
-Stable tag: 0.7.1
+Tested up to: 3.4.1
+Stable tag: 0.8.0
 
 You can use shortcode for display child pages from the page.
 
@@ -89,6 +89,9 @@ Template valiables
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 0.8.0 =
+* Add style "max-width:100%".
 
 = 0.4.0 =
 * add `add_post_type_support("page", "excerpt");`
