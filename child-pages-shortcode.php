@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 0.8.0
+Version: 0.9.0
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -18,25 +18,42 @@ private $ver = '0.4.0';
 
 function __construct()
 {
-    add_shortcode('child_pages', array(&$this, 'shortcode'));
-    add_action("wp_head", array(&$this, "wp_head"));
+    add_shortcode("child_pages", array(&$this, "shortcode"));
     add_action("init", array(&$this, "init"));
-    add_filter('plugin_row_meta', array(&$this, 'plugin_row_meta'), 10, 2);
+    add_action("wp_enqueue_scripts", array(&$this, "wp_enqueue_scripts"));
+    add_filter("plugin_row_meta", array(&$this, "plugin_row_meta"), 10, 2);
 }
 
 public function init()
 {
     add_post_type_support('page', 'excerpt');
+}
+
+public function wp_enqueue_scripts()
+{
+    $css = apply_filters(
+            "child-pages-shortcode-stylesheet",
+            plugins_url("style.css", __FILE__)
+    );
+    wp_register_style(
+        'child-pages-shortcode-css',
+        $css,
+        array(),
+        $this->ver,
+        'all'
+    );
+    wp_enqueue_style('child-pages-shortcode-css');
+
     $js = apply_filters(
         "child-pages-shortcode-js",
-        plugins_url("", __FILE__).'/script.js'
+        plugins_url("script.js", __FILE__)
     );
     wp_register_script(
         'child-pages-shortcode',
         $js,
         array('jquery'),
         $this->ver,
-        true
+        false
     );
     wp_enqueue_script('child-pages-shortcode');
 }
@@ -71,6 +88,7 @@ private function display($p)
         'order' => 'ASC',
         'nopaging' => true,
     );
+    $args = apply_filters('child-pages-shortcode-query', $args);
 
     query_posts($args);
     if (have_posts()):
@@ -116,15 +134,6 @@ private function get_template()
     $html .= '</div>';
     $html .= '</div>';
     return apply_filters("child-pages-shortcode-template", $html);
-}
-
-public function wp_head()
-{
-    $url = plugins_url("", __FILE__).'/style.css?ver='.$this->ver;
-    printf(
-        '<link rel="stylesheet" type="text/css" media="all" href="%s" />'."\n",
-        apply_filters("child-pages-shortcode-stylesheet", $url)
-    );
 }
 
 public function plugin_row_meta($links, $file)

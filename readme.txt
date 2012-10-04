@@ -3,8 +3,8 @@ Contributors: miyauchi
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
 Tags: shortcode
 Requires at least: 3.2
-Tested up to: 3.4.1
-Stable tag: 0.8.0
+Tested up to: 3.4
+Stable tag: 0.9.0
 
 You can use shortcode for display child pages from the page.
 
@@ -33,6 +33,28 @@ Display child pages of the current page.
 * width - width of block for child pages.
 
 = filter hooks example =
+
+Filter for query_posts() query.
+
+`<?php
+    // default args
+    $args = array(
+        'post_status' => 'publish',
+        'post_type' => 'page',
+        'post_parent' => $id_for_the_post,
+        'orderby' => 'menu_order',
+        'order' => 'ASC',
+        'nopaging' => true,
+    );
+
+    add_filters('child-pages-shortcode-query', "my_query");
+    function my_query($args) {
+        //
+        // some code here
+        //
+        return $args;
+    }
+?>`
 
 Filter for default template.
 
@@ -89,6 +111,10 @@ Template valiables
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 0.9.0 =
+* Add filter hook "child-pages-shortcode-query" 
+* Load stylesheet by wp_enqueue_style()
 
 = 0.8.0 =
 * Add style "max-width:100%".
