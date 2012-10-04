@@ -1,5 +1,4 @@
-(function(){
-    var $ = jQuery;
+(function($){
     $.fn.equalHeights = function() {
         var currentTallest = 0;
         $(this).each(function(){
