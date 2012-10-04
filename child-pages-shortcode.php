@@ -14,7 +14,7 @@ new childPagesShortcode();
 
 class childPagesShortcode {
 
-private $ver = '0.4.0';
+private $ver = '0.9.0';
 
 function __construct()
 {
