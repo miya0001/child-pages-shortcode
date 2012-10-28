@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: shortcode
 Requires at least: 3.2
 Tested up to: 3.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 You can use shortcode for display child pages from the page.
 
