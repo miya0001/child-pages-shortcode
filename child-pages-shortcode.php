@@ -82,12 +82,14 @@ private function display($p, $template)
         $template = str_replace('</p>', '', $template);
         $template = apply_filters(
             'child-pages-shortcode-template',
-            $template
+            $template,
+            $p
         );
     } else {
         $template = apply_filters(
             'child-pages-shortcode-template',
-            $this->get_template()
+            $this->get_template(),
+            $p
         );
         $html = sprintf(
             '<div class="child_pages child_pages-%s">',
