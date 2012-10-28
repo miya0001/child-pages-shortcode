@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 0.9.1
+Version: 1.1.0
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -22,6 +22,7 @@ function __construct()
     add_action("init", array(&$this, "init"));
     add_action("wp_enqueue_scripts", array(&$this, "wp_enqueue_scripts"));
     add_filter("plugin_row_meta", array(&$this, "plugin_row_meta"), 10, 2);
+    add_filter("child-pages-shortcode-output", "do_shortcode");
 }
 
 public function init()
@@ -58,7 +59,7 @@ public function wp_enqueue_scripts()
     wp_enqueue_script('child-pages-shortcode');
 }
 
-public function shortcode($p)
+public function shortcode($p, $template = null)
 {
 	if( !isset($p['id']) || !intval($p['id']) ){
 		$p['id'] = get_the_ID();
@@ -69,16 +70,30 @@ public function shortcode($p)
     if (!isset($p['width']) || !intval($p['width'])) {
         $p['width'] = "50%";
     }
-    return $this->display($p);
+    return $this->display($p, $template);
 }
 
-private function display($p)
+private function display($p, $template)
 {
-    $html = sprintf(
-        '<div class="child_pages child_pages-%s">',
-        esc_attr($p['size'])
-    );
-    $template = $this->get_template();
+    $html = '';
+
+    if ($template) {
+        $template = str_replace('<p>', '', $template);
+        $template = str_replace('</p>', '', $template);
+        $template = apply_filters(
+            'child-pages-shortcode-template',
+            $template
+        );
+    } else {
+        $template = apply_filters(
+            'child-pages-shortcode-template',
+            $this->get_template()
+        );
+        $html = sprintf(
+            '<div class="child_pages child_pages-%s">',
+            esc_attr($p['size'])
+        );
+    }
 
     $args = array(
         'post_status' => 'publish',
@@ -88,7 +103,7 @@ private function display($p)
         'order' => 'ASC',
         'nopaging' => true,
     );
-    $args = apply_filters('child-pages-shortcode-query', $args);
+    $args = apply_filters('child-pages-shortcode-query', $args, $p);
 
     query_posts($args);
     if (have_posts()):
@@ -117,7 +132,9 @@ private function display($p)
     wp_reset_query();
     endif; // end have_posts()
 
-    $html .= '</div>';
+    if (!$template) {
+        $html .= '</div>';
+    }
 
     return apply_filters("child-pages-shortcode-output", $html);
 }
@@ -133,7 +150,12 @@ private function get_template()
     $html .= '</div>';
     $html .= '</div>';
     $html .= '</div>';
-    return apply_filters("child-pages-shortcode-template", $html);
+
+    if ($tpl = get_post_meta(get_the_ID(), 'child-pages-template', true)) {
+        $html = $tpl;
+    }
+
+    return $html;
 }
 
 public function plugin_row_meta($links, $file)
