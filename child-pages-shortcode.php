@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 1.1.1
+Version: 1.1.2
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -73,11 +73,12 @@ public function shortcode($p, $template = null)
     return $this->display($p, $template);
 }
 
-private function display($p, $template)
+private function display($p, $tpl)
 {
     $html = '';
 
-    if ($template) {
+    if ($tpl) {
+        $template = $tpl;
         $template = str_replace('<p>', '', $template);
         $template = str_replace('</p>', '', $template);
         $template = apply_filters(
@@ -134,7 +135,7 @@ private function display($p, $template)
     wp_reset_query();
     endif; // end have_posts()
 
-    if (!$template) {
+    if (!$tpl) {
         $html .= '</div>';
     }
 
