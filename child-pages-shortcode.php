@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 1.1.2
+Version: 1.1.3
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -73,12 +73,12 @@ public function shortcode($p, $template = null)
     return $this->display($p, $template);
 }
 
-private function display($p, $tpl)
+private function display($p, $block_template)
 {
     $html = '';
 
-    if ($tpl) {
-        $template = $tpl;
+    if ($block_template) {
+        $template = $block_template;
         $template = str_replace('<p>', '', $template);
         $template = str_replace('</p>', '', $template);
         $template = apply_filters(
@@ -135,7 +135,7 @@ private function display($p, $tpl)
     wp_reset_query();
     endif; // end have_posts()
 
-    if (!$tpl) {
+    if (!$block_template) {
         $html .= '</div>';
     }
 
@@ -144,15 +144,17 @@ private function display($p, $tpl)
 
 private function get_template()
 {
-    $html = '<div id="child_page-%post_id%" class="child_page" style="width:%width%;max-width:100%;">';
+    $html = "\n";
+    $html .= '<div id="child_page-%post_id%" class="child_page" style="width:%width%;max-width:100%;">';
     $html .= '<div class="child_page-container">';
     $html .= '<div class="post_thumb"><a href="%post_url%">%post_thumb%</a></div>';
     $html .= '<div class="post_content">';
     $html .= '<h4><a href="%post_url%">%post_title%</a></h4>';
     $html .= '<div class="post_excerpt">%post_excerpt%</div>';
-    $html .= '</div>';
-    $html .= '</div>';
-    $html .= '</div>';
+    $html .= '</div><!-- .post_content  -->';
+    $html .= '</div><!-- .child_page-container -->';
+    $html .= '</div><!-- #child_page-%post_id%" -->';
+    $html .= "\n";
 
     if ($tpl = get_post_meta(get_the_ID(), 'child-pages-template', true)) {
         $html = $tpl;
