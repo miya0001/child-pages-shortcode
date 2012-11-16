@@ -30,6 +30,12 @@
     background-repeat: no-repeat;
 }
 
+.child_pages .post_thumb img
+{
+    max-width: 100%;
+    height: auto;
+}
+
 .child_pages .post_thumb .wp-post-image
 {
 }
