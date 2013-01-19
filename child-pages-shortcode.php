@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 1.1.4
+Version: 1.2.0
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -108,32 +108,21 @@ private function display($p, $block_template)
     );
     $args = apply_filters('child-pages-shortcode-query', $args, $p);
 
-    query_posts($args);
-    if (have_posts()):
-    while (have_posts()) {
-        the_post();
-        $img = null;
-        if ($tid = get_post_thumbnail_id()) {
-            $src = wp_get_attachment_image_src($tid, $p['size']);
-            $img = sprintf(
-                '<img src="%s" alt="%s" title="%s" />',
-                esc_attr($src[0]),
-                esc_attr(get_the_title()),
-                esc_attr(get_the_title())
-            );
-        }
-        $url = get_permalink(get_the_ID());
+    $pages = get_posts($args);
+    foreach ($pages as $page) {
+        $url = get_permalink($page->ID);
+        $img = get_the_post_thumbnail($page->ID, $p['size']);
+        $img = preg_replace( '/(width|height)="\d*"\s/', "", $img);
         $tpl = $template;
         $tpl = str_replace('%width%', esc_attr($p['width']), $tpl);
-        $tpl = str_replace('%post_id%', intval(get_the_ID()), $tpl);
-        $tpl = str_replace('%post_title%', esc_html(get_the_title()), $tpl);
+        $tpl = str_replace('%post_id%', intval($page->ID), $tpl);
+        $tpl = str_replace('%post_title%', $page->post_title, $tpl);
         $tpl = str_replace('%post_url%', esc_url($url), $tpl);
         $tpl = str_replace('%post_thumb%', $img, $tpl);
-        $tpl = str_replace('%post_excerpt%', get_the_excerpt(), $tpl);
+        $excerpt = apply_filters('get_the_excerpt', $page->post_excerpt);
+        $tpl = str_replace('%post_excerpt%', $excerpt, $tpl);
         $html .= $tpl;
     }
-    wp_reset_query();
-    endif; // end have_posts()
 
     if (!$block_template) {
         $html .= '</div>';

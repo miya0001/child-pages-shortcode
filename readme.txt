@@ -2,9 +2,9 @@
 Contributors: miyauchi
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
 Tags: shortcode
-Requires at least: 3.2
-Tested up to: 3.4
-Stable tag: 1.1.4
+Requires at least: 3.4
+Tested up to: 3.5
+Stable tag: 1.2.0
 
 You can use shortcode for display child pages from the page.
 
@@ -111,6 +111,9 @@ Template valiables
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 1.2.0 =
+* bug fix
 
 = 1.1.4 =
 * bug fix on non-responsive theme
