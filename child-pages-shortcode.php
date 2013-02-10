@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 1.2.0
+Version: 1.3.0
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -109,17 +109,18 @@ private function display($p, $block_template)
     $args = apply_filters('child-pages-shortcode-query', $args, $p);
 
     $pages = get_posts($args);
-    foreach ($pages as $page) {
-        $url = get_permalink($page->ID);
-        $img = get_the_post_thumbnail($page->ID, $p['size']);
+    foreach ($pages as $post) {
+        setup_postdata($post);
+        $url = get_permalink($post->ID);
+        $img = get_the_post_thumbnail($post->ID, $p['size']);
         $img = preg_replace( '/(width|height)="\d*"\s/', "", $img);
         $tpl = $template;
         $tpl = str_replace('%width%', esc_attr($p['width']), $tpl);
-        $tpl = str_replace('%post_id%', intval($page->ID), $tpl);
-        $tpl = str_replace('%post_title%', $page->post_title, $tpl);
+        $tpl = str_replace('%post_id%', intval($post->ID), $tpl);
+        $tpl = str_replace('%post_title%', $post->post_title, $tpl);
         $tpl = str_replace('%post_url%', esc_url($url), $tpl);
         $tpl = str_replace('%post_thumb%', $img, $tpl);
-        $excerpt = apply_filters('get_the_excerpt', $page->post_excerpt);
+        $excerpt = apply_filters('get_the_excerpt', $post->post_excerpt);
         $tpl = str_replace('%post_excerpt%', $excerpt, $tpl);
         $html .= $tpl;
     }
