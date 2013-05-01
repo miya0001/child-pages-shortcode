@@ -1,10 +1,10 @@
 === Child Pages Shortcode ===
 Contributors: miyauchi
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8RADH554RPKDU
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FR7RD5SGEU69Y
 Tags: shortcode
 Requires at least: 3.4
 Tested up to: 3.5
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 
 You can use shortcode for display child pages from the page.
 
@@ -31,6 +31,7 @@ Display child pages of the current page.
 * id - ID of page (Optional)
 * size - Post thumbnail size. e.g. 'thumbnail' or 'large'
 * width - width of block for child pages.
+* disable_shortcode - Shortcode not work in the template if set true.
 
 = filter hooks example =
 
@@ -94,6 +95,7 @@ Template valiables
 * %post_thumb% - <img> for Post thubmail
 * %post_title% - Page title
 * %post_excerpt% - Page excerpt
+* %post_content% - Page content (Applied the_content filteres)
 
 = Support =
 

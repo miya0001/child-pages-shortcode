@@ -4,7 +4,7 @@ Plugin Name: Child Pages Shortcode
 Author: Takayuki Miyauchi
 Plugin URI: http://wpist.me/wp/child-pages-shortcode/
 Description: You can use shortcode for display child pages from the page.
-Version: 1.3.0
+Version: 1.4.0
 Author URI: http://wpist.me/
 Domain Path: /languages
 Text Domain: child-pages-shortcode
@@ -22,7 +22,6 @@ function __construct()
     add_action("init", array(&$this, "init"));
     add_action("wp_enqueue_scripts", array(&$this, "wp_enqueue_scripts"));
     add_filter("plugin_row_meta", array(&$this, "plugin_row_meta"), 10, 2);
-    add_filter("child-pages-shortcode-output", "do_shortcode");
 }
 
 public function init()
@@ -69,6 +68,9 @@ public function shortcode($p, $template = null)
     }
     if (!isset($p['width']) || !intval($p['width'])) {
         $p['width'] = "50%";
+    }
+    if (!isset($p['disable_shortcode']) || !$p['disable_shortcode']) {
+        add_filter("child-pages-shortcode-output", "do_shortcode");
     }
     return $this->display($p, $template);
 }
@@ -122,6 +124,8 @@ private function display($p, $block_template)
         $tpl = str_replace('%post_thumb%', $img, $tpl);
         $excerpt = apply_filters('get_the_excerpt', $post->post_excerpt);
         $tpl = str_replace('%post_excerpt%', $excerpt, $tpl);
+        $content = apply_filters('the_content', $post->post_content);
+        $tpl = str_replace('%post_content%', $content, $tpl);
         $html .= $tpl;
     }
 
