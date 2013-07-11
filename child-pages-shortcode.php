@@ -77,6 +77,8 @@ public function shortcode($p, $template = null)
 
 private function display($p, $block_template)
 {
+    global $post;
+
     $html = '';
 
     if ($block_template) {
@@ -123,10 +125,10 @@ private function display($p, $block_template)
         $tpl = str_replace('%post_title%', $post->post_title, $tpl);
         $tpl = str_replace('%post_url%', esc_url($url), $tpl);
         $tpl = str_replace('%post_thumb%', $img, $tpl);
-        if (isset($p['disabled_excerpt_filters']) && $p['disabled_excerpt_filters']) {
+        if ((isset($p['disabled_excerpt_filters']) && $p['disabled_excerpt_filters']) || $post->post_excerpt) {
             $tpl = str_replace('%post_excerpt%', $post->post_excerpt, $tpl);
         } else {
-            $tpl = str_replace('%post_excerpt%', apply_filters('get_the_excerpt', $post->post_excerpt), $tpl);
+            $tpl = str_replace('%post_excerpt%', get_the_excerpt(), $tpl);
         }
         $html .= $tpl;
     }
