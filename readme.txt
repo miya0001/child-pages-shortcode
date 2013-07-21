@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: shortcode
 Requires at least: 3.4
 Tested up to: 3.5
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 
 You can use shortcode for display child pages from the page.
 
@@ -113,6 +113,9 @@ Template valiables
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 1.7.0 =
+* bug fix - missing wp_reset_postdata()
 
 = 1.6.0 =
 * bug fix
