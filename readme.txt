@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: shortcode
 Requires at least: 3.4
 Tested up to: 4.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 
 You can use shortcode for display child pages from the page.
 
@@ -114,6 +114,12 @@ Template valiables
 
 == Changelog ==
 
+= 1.9.1 =
+* bug fix - js not found
+
+= 1.9.0 =
+* bug fix - css syntax error
+
 = 1.7.0 =
 * bug fix - missing wp_reset_postdata()
 
@@ -139,7 +145,7 @@ Template valiables
 * Add filter hook "child-pages-shortcode-output"
 
 = 0.9.0 =
-* Add filter hook "child-pages-shortcode-query" 
+* Add filter hook "child-pages-shortcode-query"
 * Load stylesheet by wp_enqueue_style()
 
 = 0.8.0 =
