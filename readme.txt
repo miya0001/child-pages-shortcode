@@ -1,6 +1,5 @@
 === Child Pages Shortcode ===
 Contributors: miyauchi
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FR7RD5SGEU69Y
 Tags: shortcode
 Requires at least: 3.4
 Tested up to: 4.1
@@ -113,6 +112,9 @@ Template valiables
 * The plug-in is made effective.
 
 == Changelog ==
+
+= 1.9.2 =
+* Tested on WordPress 4.1.
 
 = 1.9.1 =
 * bug fix - js not found
