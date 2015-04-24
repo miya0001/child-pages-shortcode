@@ -1,9 +1,9 @@
 === Child Pages Shortcode ===
 Contributors: miyauchi
 Tags: shortcode
-Requires at least: 3.4
-Tested up to: 4.1
-Stable tag: 1.9.2
+Requires at least: 3.8
+Tested up to: 4.2
+Stable tag: 1.9.3
 
 You can use shortcode for display child pages from the page.
 
