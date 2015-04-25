@@ -113,6 +113,9 @@ Template valiables
 
 == Changelog ==
 
+= 1.9.3 =
+* Tested on WordPress 4.2.
+
 = 1.9.2 =
 * Tested on WordPress 4.1.
 
