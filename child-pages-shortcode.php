@@ -15,220 +15,199 @@ $child_pages_shortcode->register();
 
 class Child_Pages_Shortcode {
 
-private $ver = '1.1.4';
+	private $ver = '1.1.4';
 
-function register()
-{
-	add_action('plugins_loaded', array($this, 'plugins_loaded'));
-}
-
-function plugins_loaded()
-{
-	add_shortcode("child_pages", array($this, "shortcode"));
-	add_action("init", array($this, "init"));
-	add_action("wp_enqueue_scripts", array($this, "wp_enqueue_scripts"));
-}
-
-public function init()
-{
-	add_post_type_support('page', 'excerpt');
-}
-
-public function wp_enqueue_scripts()
-{
-	/*
-	 * Filter the stylesheet URI
-	 *
-	 * @since none
-	 * @param string $stylesheet_uri URI to the stylesheet.
-	 */
-	$css = apply_filters(
-		"child-pages-shortcode-stylesheet",
-		plugins_url("css/child-pages-shortcode.min.css", __FILE__)
-	);
-
-	wp_enqueue_style(
-		'child-pages-shortcode-css',
-		$css,
-		array(),
-		$this->ver,
-		'all'
-	);
-
-	/*
-	 * Filter the JavaScript URI
-	 *
-	 * @since none
-	 * @param string $javascript_uri URI to the JavaScript.
-	 */
-	$js = apply_filters(
-		"child-pages-shortcode-js",
-		plugins_url("js/child-pages-shortcode.min.js", __FILE__)
-	);
-
-	wp_enqueue_script(
-		'child-pages-shortcode',
-		$js,
-		array('jquery'),
-		$this->ver,
-		false
-	);
-}
-
-public function shortcode($p, $template = null)
-{
-	$default = apply_filters( 'child_pages_shortcode_defaults', array(
-		'id' => get_the_ID(),
-		'size' => 'thumbnail',
-		'width' => '50%',
-	) );
-  $p = shortcode_atts( $default, $p, 'child_pages' );
-
-	if( !isset($p['id']) || !intval($p['id']) ){
-		$p['id'] = get_the_ID();
+	function register()
+	{
+		add_action('plugins_loaded', array($this, 'plugins_loaded'));
 	}
 
-	if (!isset($p['size']) || !$p['size']) {
-		$p['size'] = 'thumbnail';
+	function plugins_loaded()
+	{
+		add_shortcode("child_pages", array($this, "shortcode"));
+		add_action("init", array($this, "init"));
+		add_action("wp_enqueue_scripts", array($this, "wp_enqueue_scripts"));
 	}
 
-	if (!isset($p['width']) || !intval($p['width'])) {
-		$p['width'] = "50%";
+	public function init()
+	{
+		add_post_type_support('page', 'excerpt');
 	}
 
-	if (!isset($p['disable_shortcode']) || !$p['disable_shortcode']) {
-		add_filter("child-pages-shortcode-output", "do_shortcode");
-	}
-
-	return $this->display($p, $template);
-}
-
-private function display($p, $block_template)
-{
-	global $post;
-
-	$html = '';
-
-	if ($block_template) {
-		$template = $block_template;
-		$template = str_replace('<p>', '', $template);
-		$template = str_replace('</p>', '', $template);
+	public function wp_enqueue_scripts()
+	{
 		/*
-		 * Filter the temaplate
+		 * Filter the stylesheet URI
 		 *
 		 * @since none
-		 * @param string $template Template HTML.
+		 * @param string $stylesheet_uri URI to the stylesheet.
 		 */
-		$template = apply_filters(
-			'child-pages-shortcode-template',
-			$template,
-			$p
-		);
-	} else {
-		/*
-		 * Filter the temaplate
-		 *
-		 * @since none
-		 * @param string $template Template HTML.
-		 */
-		$template = apply_filters(
-			'child-pages-shortcode-template',
-			$this->get_template(),
-			$p
+		$css = apply_filters(
+			"child-pages-shortcode-stylesheet",
+			plugins_url("css/child-pages-shortcode.min.css", __FILE__)
 		);
 
-		$container_class = 'child_pages child_pages-' . esc_attr( $p['size'] );
-		$container_class = apply_filters( 'child_pages_shortcode_container_class', $container_class );
-		$html = sprintf(
-			'<div class="%s">',
-			$container_class
+		wp_enqueue_style(
+			'child-pages-shortcode-css',
+			$css,
+			array(),
+			$this->ver,
+			'all'
+		);
+
+		/*
+		 * Filter the JavaScript URI
+		 *
+		 * @since none
+		 * @param string $javascript_uri URI to the JavaScript.
+		 */
+		$js = apply_filters(
+			"child-pages-shortcode-js",
+			plugins_url("js/child-pages-shortcode.min.js", __FILE__)
+		);
+
+		wp_enqueue_script(
+			'child-pages-shortcode',
+			$js,
+			array('jquery'),
+			$this->ver,
+			false
 		);
 	}
 
-	$args = array(
-		'post_status' => 'publish',
-		'post_type' => 'page',
-		'post_parent' => $p['id'],
-		'orderby' => 'menu_order',
-		'order' => 'ASC',
-		'nopaging' => true,
-	);
+	public function shortcode($atts, $template = null)
+	{
+		$atts = shortcode_atts( array(
+			'id' => get_the_ID(),
+			'size' => 'thumbnail',
+			'width' => '50%',
+			'disable_shortcode' => add_filter("child-pages-shortcode-output", "do_shortcode"),
+		), $atts, 'child_pages' );
 
-	/*
-	 * Filter the query args for the get_posts()
-	 *
-	 * @since none
-	 * @param array $args Query args. See http://codex.wordpress.org/Class_Reference/WP_Query#Parameters.
-	 */
-	$args = apply_filters('child-pages-shortcode-query', $args, $p);
+		return $this->display($atts, $template);
+	}
 
-	$pages = get_posts($args);
-	foreach ($pages as $post) {
-		setup_postdata($post);
-		/*
-		 * Filter the $post data.
-		 *
-		 * @since none
-		 * @param object $post Post data.
-		 */
-		$post = apply_filters('child_pages_shortcode_post', $post);
-		$url = get_permalink($post->ID);
-		$img = get_the_post_thumbnail($post->ID, $p['size']);
-		$img = preg_replace( '/(width|height)="\d*"\s/', "", $img);
-		$tpl = $template;
-		$tpl = str_replace('%width%', esc_attr($p['width']), $tpl);
-		$tpl = str_replace('%post_id%', intval($post->ID), $tpl);
-		$tpl = str_replace('%post_title%', $post->post_title, $tpl);
-		$tpl = str_replace('%post_url%', esc_url($url), $tpl);
-		$tpl = str_replace('%post_thumb%', $img, $tpl);
-		if (isset($p['disabled_excerpt_filters']) && $p['disabled_excerpt_filters']) {
-			$tpl = str_replace('%post_excerpt%', $post->post_excerpt, $tpl);
+	private function display($atts, $block_template)
+	{
+		global $post;
+
+		$html = '';
+
+		if ($block_template) {
+			$template = $block_template;
+			$template = str_replace('<p>', '', $template);
+			$template = str_replace('</p>', '', $template);
+			/*
+			 * Filter the template
+			 *
+			 * @since none
+			 * @param string $template Template HTML.
+			 */
+			$template = apply_filters(
+				'child-pages-shortcode-template',
+				$template,
+				$atts
+			);
 		} else {
-			$tpl = str_replace('%post_excerpt%', get_the_excerpt(), $tpl);
+			/*
+			 * Filter the template
+			 *
+			 * @since none
+			 * @param string $template Template HTML.
+			 */
+			$template = apply_filters(
+				'child-pages-shortcode-template',
+				$this->get_template(),
+				$atts
+			);
+			$html = sprintf(
+				'<div class="child_pages child_pages-%s">',
+				esc_attr($atts['size'])
+			);
 		}
-		$tpl = str_replace('%post_content%', get_the_content(), $tpl);
-		$html .= $tpl;
+
+		$args = array(
+			'post_status' => 'publish',
+			'post_type' => 'page',
+			'post_parent' => $atts['id'],
+			'orderby' => 'menu_order',
+			'order' => 'ASC',
+			'nopaging' => true,
+		);
+
+		/*
+		 * Filter the query args for the get_posts()
+		 *
+		 * @since none
+		 * @param array $args Query args. See http://codex.wordpress.org/Class_Reference/WP_Query#Parameters.
+		 */
+		$args = apply_filters('child-pages-shortcode-query', $args, $atts);
+
+		$pages = get_posts($args);
+		foreach ($pages as $post) {
+			setup_postdata($post);
+			/*
+			 * Filter the $post data.
+			 *
+			 * @since none
+			 * @param object $post Post data.
+			 */
+			$post = apply_filters('child_pages_shortcode_post', $post);
+			$url = get_permalink($post->ID);
+			$img = get_the_post_thumbnail($post->ID, $atts['size']);
+			$img = preg_replace( '/(width|height)="\d*"\s/', "", $img);
+			$tpl = $template;
+			$tpl = str_replace('%width%', esc_attr($atts['width']), $tpl);
+			$tpl = str_replace('%post_id%', intval($post->ID), $tpl);
+			$tpl = str_replace('%post_title%', $post->post_title, $tpl);
+			$tpl = str_replace('%post_url%', esc_url($url), $tpl);
+			$tpl = str_replace('%post_thumb%', $img, $tpl);
+			if ( isset($atts['disabled_excerpt_filters']) && $atts['disabled_excerpt_filters']) {
+				$tpl = str_replace('%post_excerpt%', $post->post_excerpt, $tpl);
+			} else {
+				$tpl = str_replace('%post_excerpt%', get_the_excerpt(), $tpl);
+			}
+			$tpl = str_replace('%post_content%', get_the_content(), $tpl);
+			$html .= $tpl;
+		}
+
+		wp_reset_postdata();
+
+		if (!$block_template) {
+			$html .= '</div>';
+		}
+
+		/*
+		 * Filter the output.
+		 *
+		 * @since none
+		 * @param string $html     Output of the child pages.
+		 * @param array  $pages    An array of child pages.
+		 * @param string $template Template HTML for output.
+		 */
+		return apply_filters("child-pages-shortcode-output", $html, $pages, $template);
 	}
 
-	wp_reset_postdata();
+	private function get_template()
+	{
+		$html = "\n";
+		$html .= '<div id="child_page-%post_id%" class="child_page" style="width:%width%;max-width:100%;">';
+		$html .= '<div class="child_page-container">';
+		$html .= '<div class="post_thumb"><a href="%post_url%">%post_thumb%</a></div>';
+		$html .= '<div class="post_content">';
+		$html .= '<h4><a href="%post_url%">%post_title%</a></h4>';
+		$html .= '<div class="post_excerpt">%post_excerpt%</div>';
+		$html .= '</div><!-- .post_content  -->';
+		$html .= '</div><!-- .child_page-container -->';
+		$html .= '</div><!-- #child_page-%post_id%" -->';
+		$html .= "\n";
 
-	if (!$block_template) {
-		$html .= '</div>';
+		if ($tpl = get_post_meta(get_the_ID(), 'child-pages-template', true)) {
+			$html = $tpl;
+		}
+
+		return $html;
 	}
-
-	/*
-	 * Filter the output.
-	 *
-	 * @since none
-	 * @param string $html	 Output of the child pages.
-	 * @param array  $pages	An array of child pages.
-	 * @param string $template Template HTML for output.
-	 */
-	return apply_filters("child-pages-shortcode-output", $html, $pages, $template);
-}
-
-private function get_template()
-{
-	$html = "\n";
-	$style = apply_filters( 'child_pages_shortcode_template_style', 'width:%width%; max-width:100%;' );
-	$class = apply_filters( 'child_pages_shortcode_template_class', 'child_page' );
-	$html .= '<div id="child_page-%post_id%" class="' . $class . '" style="' . $style  . '">';
-	$html .= '<div class="child_page-container">';
-	$html .= '<div class="post_thumb"><a href="%post_url%">%post_thumb%</a></div>';
-	$html .= '<div class="post_content">';
-	$html .= '<h4><a href="%post_url%">%post_title%</a></h4>';
-	$html .= '<div class="post_excerpt">%post_excerpt%</div>';
-	$html .= '</div><!-- .post_content  -->';
-	$html .= '</div><!-- .child_page-container -->';
-	$html .= '</div><!-- #child_page-%post_id%" -->';
-	$html .= "\n";
-
-	if ($tpl = get_post_meta(get_the_ID(), 'child-pages-template', true)) {
-		$html = $tpl;
-	}
-
-	return apply_filters( 'child_pages_shortcode_template', $html );
-}
 
 } // end class
 
