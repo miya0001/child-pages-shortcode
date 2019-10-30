@@ -85,14 +85,23 @@ public function shortcode($p, $template = null)
   $p = shortcode_atts( $default, $p, 'child_pages' );
 
 	if( !isset($p['id']) || !intval($p['id']) ){
+		if( !is_array($p) ) {
+			$p = array();
+		}
 		$p['id'] = get_the_ID();
 	}
 
 	if (!isset($p['size']) || !$p['size']) {
+		if( !is_array($p) ){
+			$p = array();
+		}
 		$p['size'] = 'thumbnail';
 	}
 
 	if (!isset($p['width']) || !intval($p['width'])) {
+		if( !is_array($p) ){
+			$p = array();
+		}
 		$p['width'] = "50%";
 	}
 
